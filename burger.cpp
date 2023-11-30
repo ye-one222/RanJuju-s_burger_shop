@@ -63,11 +63,11 @@ ObjectID completeButton; // MarketScene
 ObjectID checkButton; // BurgerScene
 ObjectID endButton; // EndScene
 
-vector<Ingredient> ingredient; // 13개
-vector<Burger> burger; // 5개
-vector<Side> side; // NULL 포함 4개
-vector<Drink> drink; // NULL 포함 3개
-vector<Customer> customer[4]; // 5일마다 각 4명, 날 바뀔 때마다 초기화해서 재사용
+Ingredient ingredient[13]; // 13개
+Burger burger[5]; // 5개
+Side side[4]; // NULL 포함 4개
+Drink drink[3]; // NULL 포함 3개
+Customer customer[4]; // 5일마다 각 4명, 날 바뀔 때마다 초기화해서 재사용
 User user;
 Market market;
 
@@ -108,10 +108,20 @@ void mouseCallback(ObjectID object, int x, int y, MouseAction action) {
             }
         }
     }
-    else if (object == endButton) {
-        endGame();
+    else if (object == endButton) { // 종료 버튼을 누르면
+        endGame(); // 게임 종료
+    }
+    else {
+        for (int i = 0; i < 13; i++) {
+            if (object == ingredient[i].obj_Ingredient) { // market scene에서 구매할 물품을 선택했을 떄
+                // ******** 돈이 부족하면 불가능하다고 말해야함 ********
+
+                // ******** 돈이 부족하지 않으면 내가 가지고 있는 돈은 줄이고 가지고 있는 물품에 추가
+            }
+        }
     }
 }
+
 ObjectID createObject(const char* name, const char* image, SceneID scene, int x, int y) {
     // object 선언 함수
     ObjectID object = createObject(image);
@@ -147,8 +157,34 @@ int main()
     checkButton = createObject("checkButton", "", BurgerScene, 0, 0);
     endButton = createObject("endButton", "", EndScene, 0, 0);
 
-    // 각 재료들마다 구현해야 함. 아직 안함 임시임
-    for (int i = 0; i < 13; i++) ingredient[i].obj_Ingredient = createObject("", "", MarketScene, 0, 0);
+    ingredient[0].obj_Ingredient = createObject("bread", "Images/빵.png", MarketScene, 430, 570);
+    scaleObject(ingredient[0].obj_Ingredient, 0.045f);
+    ingredient[1].obj_Ingredient = createObject("불고기패티", "Images/불고기패티.png", MarketScene, 430, 430);
+    scaleObject(ingredient[1].obj_Ingredient, 0.065f);
+    ingredient[2].obj_Ingredient = createObject("치킨", "Images/생닭.png", MarketScene, 420, 290);
+    scaleObject(ingredient[2].obj_Ingredient, 0.06f);
+    ingredient[3].obj_Ingredient = createObject("게살", "Images/게살.png", MarketScene, 430, 185);
+    scaleObject(ingredient[3].obj_Ingredient, 0.2f);
+    ingredient[4].obj_Ingredient = createObject("소한마리", "Images/소한마리.png", MarketScene, 430, 40);
+    scaleObject(ingredient[4].obj_Ingredient, 0.07f);
+    ingredient[5].obj_Ingredient = createObject("토마토", "Images/토마토.png", MarketScene, 710, 570);
+    scaleObject(ingredient[5].obj_Ingredient, 0.065f);
+    ingredient[6].obj_Ingredient = createObject("양상추", "Images/양상추.png", MarketScene, 705, 420);
+     scaleObject(ingredient[6].obj_Ingredient, 0.04f);
+    ingredient[7].obj_Ingredient = createObject("체다치즈", "Images/체다치즈.png", MarketScene, 710, 290);
+     scaleObject(ingredient[7].obj_Ingredient, 0.065f);
+    ingredient[8].obj_Ingredient = createObject("감자", "Images/감자.png", MarketScene, 710, 165);
+     scaleObject(ingredient[8].obj_Ingredient, 0.1f);
+    ingredient[9].obj_Ingredient = createObject("식용유", "Images/식용유.png", MarketScene, 990, 570);
+     scaleObject(ingredient[9].obj_Ingredient, 0.1f);
+    ingredient[10].obj_Ingredient = createObject("스트링치즈", "Images/스트링치즈.png", MarketScene, 990, 440);
+     scaleObject(ingredient[10].obj_Ingredient, 0.2f);
+    ingredient[11].obj_Ingredient = createObject("콜라1캔", "Images/콜라.png", MarketScene, 990, 300);
+     scaleObject(ingredient[11].obj_Ingredient, 0.15f);
+    ingredient[12].obj_Ingredient = createObject("사이다1캔", "Images/사이다.png", MarketScene, 990, 165);
+    scaleObject(ingredient[12].obj_Ingredient, 0.185f);
+
+    
 
     startGame(StartScene);
 }
