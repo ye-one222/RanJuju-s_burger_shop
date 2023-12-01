@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32630.192
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OOP_pj4_burgerStore", "OOP_pj4_burgerStore.vcxproj", "{EB94DF00-6CA0-4655-8683-BF292A1ACCC7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EB94DF00-6CA0-4655-8683-BF292A1ACCC7}.Debug|x64.ActiveCfg = Debug|x64
+		{EB94DF00-6CA0-4655-8683-BF292A1ACCC7}.Debug|x64.Build.0 = Debug|x64
+		{EB94DF00-6CA0-4655-8683-BF292A1ACCC7}.Debug|x86.ActiveCfg = Debug|Win32
+		{EB94DF00-6CA0-4655-8683-BF292A1ACCC7}.Debug|x86.Build.0 = Debug|Win32
+		{EB94DF00-6CA0-4655-8683-BF292A1ACCC7}.Release|x64.ActiveCfg = Release|x64
+		{EB94DF00-6CA0-4655-8683-BF292A1ACCC7}.Release|x64.Build.0 = Release|x64
+		{EB94DF00-6CA0-4655-8683-BF292A1ACCC7}.Release|x86.ActiveCfg = Release|Win32
+		{EB94DF00-6CA0-4655-8683-BF292A1ACCC7}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {544A69E2-37CD-470F-AE5B-079890685A34}
+	EndGlobalSection
+EndGlobal

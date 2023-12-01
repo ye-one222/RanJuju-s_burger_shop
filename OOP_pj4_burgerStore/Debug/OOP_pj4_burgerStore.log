@@ -1,0 +1,3 @@
+﻿  OOP_pj4_burgerStore.cpp
+C:\Users\happy\source\repos\OOP_pj4_burgerStore\OOP_pj4_burgerStore.cpp(133): warning C4715: 'Market::chooseIngredients': 모든 제어 경로에서 값을 반환하지는 않습니다.
+  OOP_pj4_burgerStore.vcxproj -> C:\Users\happy\source\repos\OOP_pj4_burgerStore\Debug\OOP_pj4_burgerStore.exe
