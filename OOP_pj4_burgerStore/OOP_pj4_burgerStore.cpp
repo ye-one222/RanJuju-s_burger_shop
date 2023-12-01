@@ -1,6 +1,7 @@
 ﻿#include <bangtal.h>
 #include <string>
 #include <vector>
+#include <time.h>
 using namespace std;
 
 // 전역 변수
@@ -103,8 +104,62 @@ bool Drink::checkDrinkIngredient() {
 
 class Customer {
 private:
-
+    Burger myBurger;
+    Side mySide;
+    Drink myDrink;
+    int totalPrice;
+    //이미지는 맨 밑에서 createObject할 때 지정
 public:
+    Customer() {
+        srand(time(0));
+        int num;
+
+        //햄버거 설정
+        num = rand() % 9;
+        if (num == 1 || num == 8)
+            myBurger.setBurger("bulgogiBurger", 3000, );
+        else if (num == 2 || num == 7)
+            myBurger.setBurger("cheeseBurger", 3500);
+        else if (num == 3 || num == 6)
+            myBurger.setBurger("chickenBurger", 3500);
+        else if (num == 4 || num == 5)
+            myBurger.setBurger("crabBurger", 4500);
+        else
+            myBurger.setBurger("cauBurger");
+
+        //사이드메뉴 설정
+        num = rand() % 4;
+        if (num == 1)
+            mySide.setSide("chips");
+        else if (num == 2)
+            mySide.setSide("nugget");
+        else if (num == 3)
+            mySide.setSide("cheeseStick");
+        else
+            mySide.setSide("NULL"); //null을 어떻게 표현해야 할까
+
+        //음료 설정
+        num = rand() % 3;
+        if (num == 1)
+            myDrink.setDrink("coke");
+        else if (num == 2)
+            myDrink.setDrink("soda");
+        else
+            myDrink.setDrink("NULL"); //null을 어떻게 표현해야 할까
+    }
+
+    void setTotalPrice() {
+        totalPrice = myBurger.getPrice() + mySide.getPrice() + myDrink.getPrice();
+    }
+
+    int getTotalPrice() {
+        return totalPrice;
+    }
+
+    bool checkIngredient() {
+
+    }
+
     ObjectID obj_Customer;
 };
 
