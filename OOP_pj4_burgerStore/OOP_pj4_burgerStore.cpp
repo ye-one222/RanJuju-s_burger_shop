@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <time.h>
+#include<map>
 using namespace std;
 
 // 전역 변수
@@ -9,7 +10,7 @@ int day = 0; // 몇 번째 날인지
 int customer_order = 1; // 몇 번째 손님인지
 
 SceneID StartScene, TutorialScene, MarketScene, BurgerScene, EndScene;
-ObjectID TutorialButton, startButton; // StartScene
+ObjectID tutorialButton, startButton; // StartScene
 ObjectID closeButton; // TutorialScene
 ObjectID completeButton; // MarketScene
 ObjectID checkButton; // BurgerScene
@@ -34,7 +35,7 @@ public:
         this->imageName = imageName;
     }
 
-    string getName() {
+     string getName() {
         return name;
     }
 
@@ -215,10 +216,84 @@ public:
 
 class User {
 private:
+    map< string, int> ingredientSet;
+    int myMoney; //내가 가지고 있는 돈
+
 
 public:
+    User() {
+        ingredientSet = {
+            { "bread", 0 },
+            { "bulgogiPatty", 0 },
+            { "chicken", 0 },
+            { "crabMeat", 0 },
+            { "cow", 0 },
+            { "tomato", 0 },
+            { "cabbage", 0 },
+            { "slicedCheese", 0 },
+            { "potato", 0 },
+            { "oil", 0 },
+            { "stringCheese", 0 },
+            { "coke", 0 },
+            { "soda", 0 }
+        };
+    }
+    User(int initialMoney) : myMoney(initialMoney) {
+        // Initialize the ingredientSet
+        ingredientSet = {
+            { "bread", 0 },
+            { "bulgogiPatty", 0 },
+            { "chicken", 0 },
+            { "crabMeat", 0 },
+            { "cow", 0 },
+            { "tomato", 0 },
+            { "cabbage", 0 },
+            { "slicedCheese", 0 },
+            { "potato", 0 },
+            { "oil", 0 },
+            { "stringCheese", 0 },
+            { "coke", 0 },
+            { "soda", 0 }
+        };
+    }
+
+    void setMoney(int initialMoney) {
+        myMoney = initialMoney;
+    }
+
+    // 마켓에서 산 재료를 재료 목록에 추가
+    void updateIngredients( Ingredient& ingredient) {
+        int amount;
+        amount = ingredientSet[ingredient.getName()];
+        amount++;
+        
+    }
+    // 마켓에서 구매할 때 돈을 차감
+    void useMoney(int totalPrice) {
+        if (myMoney >= totalPrice) {
+            myMoney -= totalPrice;
+        }
+        else {
+            //돈없는데 사려고함 --> 안된다고 띄워~~~~
+        }
+    }
+
+    // 손님에게 판매하여 돈 벌기
+    void earnMoney(int earnTotalPrice) {
+        myMoney += earnTotalPrice;
+    }
+
+    // 재료를 사용하여 햄버거 만들기
+    void makeBurgerIngredients( Ingredient& ingredient) {
+        if (ingredientSet.find(ingredient.getName()) != ingredientSet.end() && ingredientSet[ingredient.getName()] > 0) {
+            ingredientSet[ingredient.getName()]--;
+        }
+        else {
+        }
+    }
 
 };
+
 
 class Market {
 private:
@@ -249,16 +324,18 @@ Market market;
 // 함수 구현
 void mouseCallback(ObjectID object, int x, int y, MouseAction action) {
     
-    if (object == TutorialButton) { // 튜토리얼 버튼을 누르면
+    if (object == tutorialButton) { // 튜토리얼 버튼을 누르면
+        showMessage("hellekejel");
         enterScene(TutorialScene); // 튜토리얼 scene으로 이동
+
     }
-    else if (object == startButton) { // 시작 버튼을 누르면
+    if (object == startButton) { // 시작 버튼을 누르면
         enterScene(MarketScene); // 구매 scene으로 이동
     }
-    else if (object == closeButton) { // 튜토리얼을 다 읽고 닫기 버튼을 누르면
+     if (object == closeButton) { // 튜토리얼을 다 읽고 닫기 버튼을 누르면
         enterScene(StartScene); // 시작 scene으로 이동
     }
-    else if (object == completeButton) { // 구매를 마친 후 완료 버튼을 누르면
+     if (object == completeButton) { // 구매를 마친 후 완료 버튼을 누르면
         
         // ********** 손님 초기화 ********** -> 이때 object 선언
         customer_order = 1;
@@ -268,7 +345,7 @@ void mouseCallback(ObjectID object, int x, int y, MouseAction action) {
         //손님만들기
         
     }
-    else if (object == checkButton) { // 각 손님에게 메뉴를 제공하기 위해 체크 버튼을 누르면
+     if (object == checkButton) { // 각 손님에게 메뉴를 제공하기 위해 체크 버튼을 누르면
         // ********* 결과 보여주기 ************
        /* if (customer[customer_order - 1].allCheckIngredient()) {
             //전부 재료 확인 함 -> 성공 -> success 띄우고 money update
@@ -279,6 +356,8 @@ void mouseCallback(ObjectID object, int x, int y, MouseAction action) {
         }*/
         //손님 띄워주기
         if (customer_order < 4) { // 마지막 손님이 아니면
+            //이전손님삭제~~~~
+            
             //시간 지연 해보기~~~
             customer_order += 1; // 다음 손님을 봐야 함
             customer[customer_order - 1].obj_Customer = createObject("불고기패티", "Images/ingredient/불고기패티.png", BurgerScene, 0, 0);
@@ -296,22 +375,36 @@ void mouseCallback(ObjectID object, int x, int y, MouseAction action) {
             }
         }
     }
-    else if (object == endButton) { // 종료 버튼을 누르면
+    if (object == endButton) { // 종료 버튼을 누르면
         endGame(); // 게임 종료
     }
-    else if (market.chooseIngredients(object) == true) {
+    if ( market.chooseIngredients(object) == true) {
         // 마켓의 ingredients를 클릭한 경우
+        for (int i = 0; i < 13; i++) {
+            if (object == ingredient[i].obj_Ingredient) {
+                user.updateIngredients(ingredient[i]);
+                //바뀐 해당 재료의 amount를 show message
+                //위치설정은 어캄?????????
+            }
+        }
+        
+        
     }
+    //if (/*여기서 판매대에서 재료 클릭했을때*/) {
+        //customer[customer_order - 1].allCheckIngredients(object);
+    //}
 }
 
 ObjectID createObject(const char* name, const char* image, SceneID scene, int x, int y) {
     // object 선언 함수
     ObjectID object = createObject(image);
+    //해당 obj가 어떤 객체인지 모륵ㅁ
     locateObject(object, scene, x, y); // 해당 위치에 object를 위치시킴
     showObject(object); // object를 보이게 함
 
     return object;
 }
+
 
 void setMarketIngredients() {
     ingredient[0].obj_Ingredient = createObject("bread", "Images/ingredient/bread.png", MarketScene, 440, 580);
@@ -364,12 +457,13 @@ int main()
 
     // object 생성
     // 아직 이미지, 위치 지정 안함
-    TutorialButton = createObject("TutorialButton", "Images/button/tutorialButton.png", StartScene, 150, 0);
+    tutorialButton = createObject("tutorialButton", "Images/button/tutorialButton.png", StartScene, 150, 0);
     startButton = createObject("startButton", "Images/button/startButton.png", StartScene, 850, 0);
     closeButton = createObject("closeButton", "Images/button/closeButton.png", TutorialScene, 1000, 450);
     completeButton = createObject("completeButton", "Images/button/completeButton.png", MarketScene, 900, -80);
     checkButton = createObject("checkButton", "Images/button/checkButton.png", BurgerScene, 1000, 200);
     endButton = createObject("endButton", "Images/button/endButton.png", EndScene, 0, 0);
+
 
     setMarketIngredients();
     
