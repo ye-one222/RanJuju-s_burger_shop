@@ -1,6 +1,7 @@
 ﻿#include <bangtal.h>
 #include <string>
 #include <vector>
+#include <time.h>
 #include<map>
 using namespace std;
 
@@ -104,8 +105,112 @@ bool Drink::checkDrinkIngredient() {
 
 class Customer {
 private:
-
+    Burger myBurger;
+    Side mySide;
+    Drink myDrink;
+    int totalPrice;
+    //이미지는 맨 밑에서 createObject할 때 지정
 public:
+    Customer() {
+        srand(time(0));
+        int num;
+
+        //햄버거 설정
+        vector <Ingredient> burgerIng;
+        num = rand() % 9;
+        if (num == 1 || num == 8) {
+            burgerIng.push_back(ingredient[0]);
+            burgerIng.push_back(ingredient[1]);
+            burgerIng.push_back(ingredient[6]);
+
+            myBurger.setBurger("bulgogiBurger", 3000, burgerIng);
+        }
+        else if (num == 2 || num == 7) {
+            burgerIng.push_back(ingredient[0]);
+            burgerIng.push_back(ingredient[1]);
+            burgerIng.push_back(ingredient[6]);
+            burgerIng.push_back(ingredient[7]);
+
+            myBurger.setBurger("cheeseBurger", 3500, burgerIng);
+        }
+        else if (num == 3 || num == 6) {
+            burgerIng.push_back(ingredient[0]);
+            burgerIng.push_back(ingredient[2]);
+            burgerIng.push_back(ingredient[6]);
+
+            myBurger.setBurger("chickenBurger", 3500, burgerIng);
+        }
+        else if (num == 4 || num == 5) {
+            burgerIng.push_back(ingredient[0]);
+            burgerIng.push_back(ingredient[3]);
+            burgerIng.push_back(ingredient[5]);
+
+            myBurger.setBurger("crabBurger", 4500, burgerIng);
+        }
+        else {
+            burgerIng.push_back(ingredient[0]);
+            burgerIng.push_back(ingredient[4]);
+            burgerIng.push_back(ingredient[5]);
+            burgerIng.push_back(ingredient[6]);
+
+            myBurger.setBurger("cauBurger", 20000, burgerIng);
+        }
+
+        //사이드메뉴 설정
+        vector <Ingredient> sideIng;
+        num = rand() % 4;
+        if (num == 1) {
+            sideIng.push_back(ingredient[8]);
+            sideIng.push_back(ingredient[9]);
+
+            mySide.setSide("chips", 2000, sideIng);
+        }
+        else if (num == 2) {
+            sideIng.push_back(ingredient[7]);
+            sideIng.push_back(ingredient[9]);
+
+            mySide.setSide("nugget", 2000, sideIng);
+        }
+        else if (num == 3) {
+            sideIng.push_back(ingredient[10]);
+            sideIng.push_back(ingredient[9]);
+
+            mySide.setSide("cheeseStick", 2000, sideIng);
+        }
+        else {
+            mySide.setSide("NULL"); //null을 어떻게 표현해야 할까
+        }
+
+        //음료 설정
+        vector <Ingredient> drinkIng;
+        num = rand() % 3;
+        if (num == 1) {
+            drinkIng.push_back(ingredient[11]);
+
+            myDrink.setDrink("coke", 2000, drinkIng);
+        }
+        else if (num == 2) {
+            drinkIng.push_back(ingredient[12]);
+
+            myDrink.setDrink("soda", 2000, drinkIng);
+        }
+        else {
+            myDrink.setDrink("NULL"); //null을 어떻게 표현해야 할까
+        }
+    }
+
+    void setTotalPrice() {
+        totalPrice = myBurger.getPrice() + mySide.getPrice() + myDrink.getPrice();
+    }
+
+    int getTotalPrice() {
+        return totalPrice;
+    }
+
+    bool checkIngredient() {
+
+    }
+
     ObjectID obj_Customer;
 };
 
