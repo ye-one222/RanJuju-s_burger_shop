@@ -1,12 +1,26 @@
 ﻿  OOP_pj4_burgerStore.cpp
-C:\정예원\2023\2학기\객체지향프로그래밍\새 폴더\RanJuju-s_burger_shop\OOP_pj4_burgerStore\OOP_pj4_burgerStore.cpp(75,27): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\정예원\2023\2학기\객체지향프로그래밍\새 폴더\RanJuju-s_burger_shop\OOP_pj4_burgerStore\OOP_pj4_burgerStore.cpp(87,23): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\정예원\2023\2학기\객체지향프로그래밍\새 폴더\RanJuju-s_burger_shop\OOP_pj4_burgerStore\OOP_pj4_burgerStore.cpp(88,27): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\정예원\2023\2학기\객체지향프로그래밍\새 폴더\RanJuju-s_burger_shop\OOP_pj4_burgerStore\OOP_pj4_burgerStore.cpp(132,19): warning C4244: '인수': 'time_t'에서 'unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\정예원\2023\2학기\객체지향프로그래밍\새 폴더\RanJuju-s_burger_shop\OOP_pj4_burgerStore\OOP_pj4_burgerStore.cpp(358,27): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\정예원\2023\2학기\객체지향프로그래밍\새 폴더\RanJuju-s_burger_shop\OOP_pj4_burgerStore\OOP_pj4_burgerStore.cpp(407,27): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\정예원\2023\2학기\객체지향프로그래밍\새 폴더\RanJuju-s_burger_shop\OOP_pj4_burgerStore\OOP_pj4_burgerStore.cpp(498,27): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\정예원\2023\2학기\객체지향프로그래밍\새 폴더\RanJuju-s_burger_shop\OOP_pj4_burgerStore\OOP_pj4_burgerStore.cpp(526,31): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\정예원\2023\2학기\객체지향프로그래밍\새 폴더\RanJuju-s_burger_shop\OOP_pj4_burgerStore\OOP_pj4_burgerStore.cpp(551,35): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\정예원\2023\2학기\객체지향프로그래밍\새 폴더\RanJuju-s_burger_shop\OOP_pj4_burgerStore\OOP_pj4_burgerStore.cpp(330): warning C4715: 'Market::chooseIngredients': 모든 제어 경로에서 값을 반환하지는 않습니다.
+C:\정예원\2023\2학기\객체지향프로그래밍\새 폴더\RanJuju-s_burger_shop\OOP_pj4_burgerStore\OOP_pj4_burgerStore.cpp(80,27): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\정예원\2023\2학기\객체지향프로그래밍\새 폴더\RanJuju-s_burger_shop\OOP_pj4_burgerStore\OOP_pj4_burgerStore.cpp(92,23): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\정예원\2023\2학기\객체지향프로그래밍\새 폴더\RanJuju-s_burger_shop\OOP_pj4_burgerStore\OOP_pj4_burgerStore.cpp(93,27): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\정예원\2023\2학기\객체지향프로그래밍\새 폴더\RanJuju-s_burger_shop\OOP_pj4_burgerStore\OOP_pj4_burgerStore.cpp(137,19): warning C4244: '인수': 'time_t'에서 'unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\정예원\2023\2학기\객체지향프로그래밍\새 폴더\RanJuju-s_burger_shop\OOP_pj4_burgerStore\OOP_pj4_burgerStore.cpp(385,27): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\정예원\2023\2학기\객체지향프로그래밍\새 폴더\RanJuju-s_burger_shop\OOP_pj4_burgerStore\OOP_pj4_burgerStore.cpp(434,27): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\정예원\2023\2학기\객체지향프로그래밍\새 폴더\RanJuju-s_burger_shop\OOP_pj4_burgerStore\OOP_pj4_burgerStore.cpp(515,27): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\정예원\2023\2학기\객체지향프로그래밍\새 폴더\RanJuju-s_burger_shop\OOP_pj4_burgerStore\OOP_pj4_burgerStore.cpp(552,31): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\정예원\2023\2학기\객체지향프로그래밍\새 폴더\RanJuju-s_burger_shop\OOP_pj4_burgerStore\OOP_pj4_burgerStore.cpp(596,35): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\정예원\2023\2학기\객체지향프로그래밍\새 폴더\RanJuju-s_burger_shop\OOP_pj4_burgerStore\OOP_pj4_burgerStore.cpp(614,27): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\정예원\2023\2학기\객체지향프로그래밍\새 폴더\RanJuju-s_burger_shop\OOP_pj4_burgerStore\OOP_pj4_burgerStore.cpp(626,31): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\정예원\2023\2학기\객체지향프로그래밍\새 폴더\RanJuju-s_burger_shop\OOP_pj4_burgerStore\OOP_pj4_burgerStore.cpp(637,31): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\정예원\2023\2학기\객체지향프로그래밍\새 폴더\RanJuju-s_burger_shop\OOP_pj4_burgerStore\OOP_pj4_burgerStore.cpp(648,31): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\정예원\2023\2학기\객체지향프로그래밍\새 폴더\RanJuju-s_burger_shop\OOP_pj4_burgerStore\OOP_pj4_burgerStore.cpp(659,31): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\정예원\2023\2학기\객체지향프로그래밍\새 폴더\RanJuju-s_burger_shop\OOP_pj4_burgerStore\OOP_pj4_burgerStore.cpp(670,31): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\정예원\2023\2학기\객체지향프로그래밍\새 폴더\RanJuju-s_burger_shop\OOP_pj4_burgerStore\OOP_pj4_burgerStore.cpp(681,31): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\정예원\2023\2학기\객체지향프로그래밍\새 폴더\RanJuju-s_burger_shop\OOP_pj4_burgerStore\OOP_pj4_burgerStore.cpp(692,31): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\정예원\2023\2학기\객체지향프로그래밍\새 폴더\RanJuju-s_burger_shop\OOP_pj4_burgerStore\OOP_pj4_burgerStore.cpp(703,31): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\정예원\2023\2학기\객체지향프로그래밍\새 폴더\RanJuju-s_burger_shop\OOP_pj4_burgerStore\OOP_pj4_burgerStore.cpp(714,31): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\정예원\2023\2학기\객체지향프로그래밍\새 폴더\RanJuju-s_burger_shop\OOP_pj4_burgerStore\OOP_pj4_burgerStore.cpp(725,31): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\정예원\2023\2학기\객체지향프로그래밍\새 폴더\RanJuju-s_burger_shop\OOP_pj4_burgerStore\OOP_pj4_burgerStore.cpp(736,31): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\정예원\2023\2학기\객체지향프로그래밍\새 폴더\RanJuju-s_burger_shop\OOP_pj4_burgerStore\OOP_pj4_burgerStore.cpp(747,31): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\정예원\2023\2학기\객체지향프로그래밍\새 폴더\RanJuju-s_burger_shop\OOP_pj4_burgerStore\OOP_pj4_burgerStore.cpp(758,31): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\정예원\2023\2학기\객체지향프로그래밍\새 폴더\RanJuju-s_burger_shop\OOP_pj4_burgerStore\OOP_pj4_burgerStore.cpp(363): warning C4715: 'Market::chooseIngredients': 모든 제어 경로에서 값을 반환하지는 않습니다.
   OOP_pj4_burgerStore.vcxproj -> C:\정예원\2023\2학기\객체지향프로그래밍\새 폴더\RanJuju-s_burger_shop\OOP_pj4_burgerStore\Debug\OOP_pj4_burgerStore.exe
