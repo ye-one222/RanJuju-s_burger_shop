@@ -48,60 +48,61 @@ public:
 };
 Ingredient ingredient[13];
 
-class Burger {
+class Menu {
 private:
-    string burgerName;
+    string name;
     int price;
     vector<Ingredient> ingredients;
-    string imageName;   //이미지 파일 경로
 public:
-    ObjectID obj_Burger;
-    void setBurger(string Name);
+    Menu() { name = "NULL"; price = 0; }
+    Menu(string _name, int _price, vector<Ingredient> _ingredients) :price(_price) {
+        name = _name;   //shallow copy
+        for (int i = 0; i < _ingredients.size(); i++) {
+            ingredients.push_back(_ingredients[i]);
+        }
+    }
+    ObjectID obj;
     int getPrice() { return price; }
-    //bool checkBurgerIngredient(); 이게 여기있으면 안돼.... 클래스는 그냥 틀이라서.. 재료도 정해진게아니라 객체 생성할때 만드는 거라 비교자체가 안됨
-
+    bool checkIngredient(vector<Ingredient> choosenIngredients);
 };
 
-void Burger::setBurger(string Name) {  
-    this->burgerName = Name;
-    this->price = 3000;
-    this->ingredients.push_back(ingredient[0]); //이렇게 각 버거에 필요한 재료 push, 재료 비교할때는 
-    
+bool Menu::checkIngredient(vector<Ingredient> choosenIngredients) {
+    int checkIng = 0;
+    for (int i = 0; i < ingredients.size(); i++) {  //내거에서 있는지 비교 -> 있으면 바로 break -> 고른 수량상관없이 확인가능 -> 개수이용
+        for (int j = 0; j < choosenIngredients.size(); j++) {
+            if (ingredients[i].getName() == choosenIngredients[j].getName()) {  //내거랑 고른거랑 같은게 존재한다면
+                checkIng++;
+                break;
+            }
+        }
+    }
+    if (checkIng == ingredients.size()) {   //메뉴재료랑 같은 고른 재료의 개수가 메뉴재료의 개수와 같다면 
+        return true;
+    }
+    else {
+        return false;
+    }
 }
 
-class Side {
-private:
-    string sideName;
-    int price;
-    vector<Ingredient> ingredients;
-    string imageName;   //이미지 파일 경로
+
+class Burger :public Menu {
 public:
-    ObjectID obj_Side;
-    int getPrice() { return price; }
-    bool checkSideIngredient();
-
+    Burger() {}
+    Burger(string _name, int _price, vector<Ingredient> _ingredients) :Menu(_name, _price, _ingredients) {/*생성자*/ };
 };
-bool Side::checkSideIngredient() {
-    return true;
 
-}
-
-class Drink {
-private:
-    string drinkName;
-    int price;
-    vector<Ingredient> ingredients;
-    string imageName;   //이미지 파일 경로
+class Side :public Menu {
 public:
-    ObjectID obj_Drink;
-    int getPrice() { return price; }
-    bool checkDrinkIngredient();
-
+    Side() {}
+    Side(string _name, int _price, vector<Ingredient> _ingredients) :Menu(_name, _price, _ingredients) {/*생성자*/ };
 };
-bool Drink::checkDrinkIngredient() {
-    return true;
 
-}
+class Drink :public Menu {
+public:
+    Drink() {}
+    Drink(string _name, int _price, vector<Ingredient> _ingredients) :Menu(_name, _price, _ingredients) {/*생성자*/ };
+};
+
 
 class Customer {
 private:
@@ -114,7 +115,6 @@ public:
     Customer() {
         srand(time(0));
         int num;
-
         //햄버거 설정
         vector <Ingredient> burgerIng;
         num = rand() % 9;
@@ -122,63 +122,54 @@ public:
             burgerIng.push_back(ingredient[0]);
             burgerIng.push_back(ingredient[1]);
             burgerIng.push_back(ingredient[6]);
-
-            myBurger.setBurger("bulgogiBurger", 3000, burgerIng);
+            myBurger = Burger("bulgogiBurger", 3000, burgerIng);
         }
         else if (num == 2 || num == 7) {
             burgerIng.push_back(ingredient[0]);
             burgerIng.push_back(ingredient[1]);
             burgerIng.push_back(ingredient[6]);
             burgerIng.push_back(ingredient[7]);
-
-            myBurger.setBurger("cheeseBurger", 3500, burgerIng);
+            myBurger = Burger("cheeseBurger", 3500, burgerIng);
         }
         else if (num == 3 || num == 6) {
             burgerIng.push_back(ingredient[0]);
             burgerIng.push_back(ingredient[2]);
             burgerIng.push_back(ingredient[6]);
-
-            myBurger.setBurger("chickenBurger", 3500, burgerIng);
+            myBurger = Burger("chickenBurger", 3500, burgerIng);
         }
         else if (num == 4 || num == 5) {
             burgerIng.push_back(ingredient[0]);
             burgerIng.push_back(ingredient[3]);
             burgerIng.push_back(ingredient[5]);
-
-            myBurger.setBurger("crabBurger", 4500, burgerIng);
+            myBurger = Burger("crabBurger", 4500, burgerIng);
         }
         else {
             burgerIng.push_back(ingredient[0]);
             burgerIng.push_back(ingredient[4]);
             burgerIng.push_back(ingredient[5]);
             burgerIng.push_back(ingredient[6]);
-
-            myBurger.setBurger("cauBurger", 20000, burgerIng);
+            myBurger = Burger("cauBurger", 20000, burgerIng);
         }
-
         //사이드메뉴 설정
         vector <Ingredient> sideIng;
         num = rand() % 4;
         if (num == 1) {
             sideIng.push_back(ingredient[8]);
             sideIng.push_back(ingredient[9]);
-
-            mySide.setSide("chips", 2000, sideIng);
+            mySide = Side("chips", 2000, sideIng);
         }
         else if (num == 2) {
             sideIng.push_back(ingredient[7]);
             sideIng.push_back(ingredient[9]);
-
-            mySide.setSide("nugget", 2000, sideIng);
+            mySide = Side("nugget", 2000, sideIng);
         }
         else if (num == 3) {
             sideIng.push_back(ingredient[10]);
             sideIng.push_back(ingredient[9]);
-
-            mySide.setSide("cheeseStick", 2000, sideIng);
+            mySide = Side("cheeseStick", 2000, sideIng);
         }
         else {
-            mySide.setSide("NULL"); //null을 어떻게 표현해야 할까
+            //null인데 기본생성자가 null이라 뭐 안해줘도 됨 !
         }
 
         //음료 설정
@@ -186,31 +177,29 @@ public:
         num = rand() % 3;
         if (num == 1) {
             drinkIng.push_back(ingredient[11]);
-
-            myDrink.setDrink("coke", 2000, drinkIng);
+            myDrink = Drink("coke", 2000, drinkIng);
         }
         else if (num == 2) {
             drinkIng.push_back(ingredient[12]);
-
-            myDrink.setDrink("soda", 2000, drinkIng);
+            myDrink = Drink("soda", 2000, drinkIng);
         }
         else {
-            myDrink.setDrink("NULL"); //null을 어떻게 표현해야 할까
+            //null인데 기본생성자가 null이라 뭐 안해줘도 됨 !
         }
-    }
 
-    void setTotalPrice() {
+        // 총 가격 설정
         totalPrice = myBurger.getPrice() + mySide.getPrice() + myDrink.getPrice();
     }
-
+    
     int getTotalPrice() {
         return totalPrice;
     }
-
-    bool checkIngredient() {
-
+    bool allCheckIngredient() {/* choosenIngredient 클릭함수에서 구현 후 해야함
+        if (myBurger.checkIngredient() && mySide.checkIngredient() && myDrink.checkIngredient()) {
+            return true;
+        }else
+            return false;*/
     }
-
     ObjectID obj_Customer;
 };
 
@@ -222,24 +211,6 @@ private:
 
 public:
     User() {
-        ingredientSet = {
-            { "bread", 0 },
-            { "bulgogiPatty", 0 },
-            { "chicken", 0 },
-            { "crabMeat", 0 },
-            { "cow", 0 },
-            { "tomato", 0 },
-            { "cabbage", 0 },
-            { "slicedCheese", 0 },
-            { "potato", 0 },
-            { "oil", 0 },
-            { "stringCheese", 0 },
-            { "coke", 0 },
-            { "soda", 0 }
-        };
-    }
-    User(int initialMoney) : myMoney(initialMoney) {
-        // Initialize the ingredientSet
         ingredientSet = {
             { "bread", 0 },
             { "bulgogiPatty", 0 },
@@ -292,6 +263,7 @@ public:
         }
     }
 
+    ObjectID obj_User;
 };
 
 
@@ -332,10 +304,10 @@ void mouseCallback(ObjectID object, int x, int y, MouseAction action) {
     if (object == startButton) { // 시작 버튼을 누르면
         enterScene(MarketScene); // 구매 scene으로 이동
     }
-     if (object == closeButton) { // 튜토리얼을 다 읽고 닫기 버튼을 누르면
+    if (object == closeButton) { // 튜토리얼을 다 읽고 닫기 버튼을 누르면
         enterScene(StartScene); // 시작 scene으로 이동
     }
-     if (object == completeButton) { // 구매를 마친 후 완료 버튼을 누르면
+    if (object == completeButton) { // 구매를 마친 후 완료 버튼을 누르면
         
         // ********** 손님 초기화 ********** -> 이때 object 선언
         customer_order = 1;
@@ -345,7 +317,7 @@ void mouseCallback(ObjectID object, int x, int y, MouseAction action) {
         //손님만들기
         
     }
-     if (object == checkButton) { // 각 손님에게 메뉴를 제공하기 위해 체크 버튼을 누르면
+    if (object == checkButton) { // 각 손님에게 메뉴를 제공하기 위해 체크 버튼을 누르면
         // ********* 결과 보여주기 ************
        /* if (customer[customer_order - 1].allCheckIngredient()) {
             //전부 재료 확인 함 -> 성공 -> success 띄우고 money update
@@ -435,6 +407,35 @@ void setMarketIngredients() {
     scaleObject(ingredient[12].obj_Ingredient, 0.185f);
 }
 
+void setUserIngredients() {
+    user.obj_User = createObject("bread", "Images/ingredient/bread.png", BurgerScene, 40, 530);
+    scaleObject(user.obj_User, 0.028f);
+    user.obj_User = createObject("불고기패티", "Images/ingredient/불고기패티.png", BurgerScene, 40, 445);
+    scaleObject(user.obj_User, 0.036f);
+    user.obj_User = createObject("치킨", "Images/ingredient/생닭.png", BurgerScene, 30, 340);
+    scaleObject(user.obj_User, 0.04f);
+    user.obj_User = createObject("게살", "Images/ingredient/게살.png", BurgerScene, 40, 275);
+    scaleObject(user.obj_User, 0.12f);
+    user.obj_User = createObject("소한마리", "Images/ingredient/소한마리.png", BurgerScene, 40, 195);
+    scaleObject(user.obj_User, 0.034f);
+    user.obj_User = createObject("토마토", "Images/ingredient/토마토.png", BurgerScene, 35, 105);
+    scaleObject(user.obj_User, 0.038f);
+    user.obj_User = createObject("양상추", "Images/ingredient/양상추.png", BurgerScene, 210, 530);
+    scaleObject(user.obj_User, 0.024f);
+    user.obj_User = createObject("체다치즈", "Images/ingredient/체다치즈.png", BurgerScene, 215, 450);
+    scaleObject(user.obj_User, 0.035f);
+    user.obj_User = createObject("감자", "Images/ingredient/감자.png", BurgerScene, 220, 370);
+    scaleObject(user.obj_User, 0.055f);
+    user.obj_User = createObject("식용유", "Images/ingredient/식용유.png", BurgerScene, 210, 290);
+    scaleObject(user.obj_User, 0.065f);
+    user.obj_User = createObject("스트링치즈", "Images/ingredient/스트링치즈.png", BurgerScene, 210, 200);
+    scaleObject(user.obj_User, 0.12f);
+    user.obj_User = createObject("콜라1캔", "Images/ingredient/콜라.png", BurgerScene, 180, 120);
+    scaleObject(user.obj_User, 0.08f);
+    user.obj_User = createObject("사이다1캔", "Images/ingredient/사이다.png", BurgerScene, 280, 120);
+    scaleObject(user.obj_User, 0.095f);
+}
+
 void setStartScene() {
 StartScene = createScene("StartScene", "Images/scene/StartScene.png");
 }
@@ -466,6 +467,7 @@ int main()
 
 
     setMarketIngredients();
-    
+    setUserIngredients();
+
     startGame(StartScene);
 }

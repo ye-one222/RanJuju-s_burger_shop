@@ -1,2 +1,3 @@
 C:\Users\happy\source\repos\OOP_pj4_burgerStore\Debug\OOP_pj4_burgerStore.exe
 C:\Users\happy\OneDrive\바탕 화면\oop4\RanJuju-s_burger_shop\OOP_pj4_burgerStore\Debug\OOP_pj4_burgerStore.exe
+C:\정예원\2023\2학기\객체지향프로그래밍\새 폴더\RanJuju-s_burger_shop\OOP_pj4_burgerStore\Debug\OOP_pj4_burgerStore.exe
