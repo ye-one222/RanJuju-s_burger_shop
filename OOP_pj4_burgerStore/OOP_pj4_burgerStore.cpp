@@ -218,26 +218,46 @@ public:
         return true;
     }
 
+    //손님 랜덤 이미지
+    void chooseCustomer() {
+        int random = rand() % 21;
+        char buff[30];
+        sprintf(buff, "Images/customer/%d.png", random);
+        char id = (char)random;
+        obj_Customer = createObject(&id, buff, BurgerScene, 860, 305);
+        scaleObject(obj_Customer, 0.50f);
+    }
+
     //손님 옆에 메뉴 띄우기
     void showCustomerMenu() {
         string imagePath;
 
         //버거
         imagePath = "Images/menu/" + myBurger.getName() + ".png";
-        obj_Customer = createObject("burger", imagePath.c_str(), BurgerScene, 460, 530);
-        scaleObject(obj_Customer, 0.3f);
+        myBurger.obj = createObject("burger", imagePath.c_str(), BurgerScene, 460, 530);
+        scaleObject(myBurger.obj, 0.3f);
 
         //사이드
         imagePath = "";
         imagePath = "Images/menu/" + mySide.getName() + ".png";
-        obj_Customer = createObject("side", imagePath.c_str(), BurgerScene, 620, 530);
-        scaleObject(obj_Customer, 0.3f);
+        mySide.obj = createObject("side", imagePath.c_str(), BurgerScene, 620, 530);
+        scaleObject(mySide.obj, 0.3f);
 
         //음료
         imagePath = "";
         imagePath = "Images/menu/" + myDrink.getName() + ".png";
-        obj_Customer = createObject("drink", imagePath.c_str(), BurgerScene, 760, 530);
-        scaleObject(obj_Customer, 0.3f);
+        myDrink.obj = createObject("drink", imagePath.c_str(), BurgerScene, 760, 530);
+        scaleObject(myDrink.obj, 0.3f);
+    }
+
+    void hideCustomerMenu() {
+        hideObject(myBurger.obj);
+        hideObject(mySide.obj);
+        hideObject(myDrink.obj);
+    }
+
+    void hideCustomer() {
+        hideObject(obj_Customer);
     }
 
     ObjectID obj_Customer;
@@ -461,16 +481,6 @@ void showDay(int day, SceneID sceneName) {
     scaleObject(dayObject, 0.13f);
 }
 
-//손님 랜덤 이미지
-void chooseCustomer(ObjectID obj) {
-    int random = rand() % 21;
-    char buff[30];
-    sprintf(buff, "Images/customer/%d.png", random);
-    char id = (char)random;
-    obj = createObject(&id, buff, BurgerScene, 860, 305);
-    scaleObject(obj, 0.50f);
-}
-
 
 ObjectID successObj = createObject("successObj", "Images/result/success.png", BurgerScene, 50, 0);
 ObjectID failObj = createObject("failObj", "Images/result/fail.png", BurgerScene, 0, 0);
@@ -496,7 +506,7 @@ void mouseCallback(ObjectID object, int x, int y, MouseAction action) {
 
     //new day        
         for (int i = 0; i < moneyNum.size(); i++)  hideObject(moneyNum[i]);
-        chooseCustomer(customer[customer_order - 1].obj_Customer);  //고객 obj+이미지 생성
+        customer[customer_order - 1].chooseCustomer();  //고객 obj+이미지 생성
         scaleObject(customer[customer_order - 1].obj_Customer, 0.45f);
 
         customer[customer_order - 1].updateCustomer(); //랜덤으로 손님 메뉴 설정
@@ -532,9 +542,10 @@ void mouseCallback(ObjectID object, int x, int y, MouseAction action) {
         }
 
         if (customer_order < 4) {
-            hideObject(customer[customer_order - 1].obj_Customer);  //이전 손님 삭제
+            customer[customer_order - 1].hideCustomerMenu();  //이전 손님 메뉴 삭제
+            customer[customer_order - 1].hideCustomer(); //이전 손님 삭제
             customer_order += 1;                                    // 손님배열 증가 -> 굳이 왜 배열로?
-            chooseCustomer(customer[customer_order - 1].obj_Customer);  //다음 고객 obj+이미지 생성
+            customer[customer_order - 1].chooseCustomer();  //다음 고객 obj+이미지 생성
             scaleObject(customer[customer_order - 1].obj_Customer, 0.45f);
 
             customer[customer_order - 1].updateCustomer(); //랜덤으로 손님 메뉴 설정
@@ -542,7 +553,8 @@ void mouseCallback(ObjectID object, int x, int y, MouseAction action) {
 
         }
         else if (customer_order == 4) { // 마지막 손님이면
-            hideObject(customer[customer_order - 1].obj_Customer);//이전 손님 삭제
+            customer[customer_order - 1].hideCustomerMenu();//이전 손님 메뉴 삭제
+            customer[customer_order - 1].hideCustomer(); //이전 손님 삭제
             hideObject(dayObject);
             if (day < 5) { // 마지막 날이 아니면
                 customer_order = 1;
