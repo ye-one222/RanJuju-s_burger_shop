@@ -13,9 +13,10 @@ using namespace std;
 int day = 0; // 몇 번째 날인지
 int customer_order = 1; // 몇 번째 손님인지
 
-SceneID StartScene, TutorialScene, MarketScene, BurgerScene, EndScene;
+SceneID StartScene, TutorialScene1, TutorialScene2, TutorialScene3, TutorialScene4, MarketScene, BurgerScene, EndScene;
 ObjectID tutorialButton, startButton; // StartScene
-ObjectID closeButton; // TutorialScene
+ObjectID closeButton1, closeButton2, closeButton3, closeButton4; // TutorialScene
+ObjectID TS1rightButton, TS2leftButton, TS2rightButton, TS3leftButton, TS3rightButton, TS4leftButton; // TutorialScene
 ObjectID completeButton; // MarketScene
 ObjectID checkButton; // BurgerScene
 ObjectID endButton; // EndScene
@@ -456,7 +457,7 @@ void mouseCallback(ObjectID object, int x, int y, MouseAction action) {
     scaleObject(failObj, 0.60f);    hideObject(failObj);
 
     if (object == tutorialButton) { // 튜토리얼 버튼을 누르면
-        enterScene(TutorialScene); // 튜토리얼 scene으로 이동
+        enterScene(TutorialScene1); // 튜토리얼 scene으로 이동
     }
     if (object == startButton) { // 시작 버튼을 누르면
         enterScene(MarketScene); // 구매 scene으로 이동
@@ -464,7 +465,34 @@ void mouseCallback(ObjectID object, int x, int y, MouseAction action) {
         showDay(day, MarketScene);
         setStock(MarketScene);
     }
-    if (object == closeButton) { // 튜토리얼을 다 읽고 닫기 버튼을 누르면
+    if (object == TS1rightButton) {
+        enterScene(TutorialScene2);
+    }
+    if (object == TS2leftButton) {
+        enterScene(TutorialScene1);
+    }
+    if (object == TS2rightButton) {
+        enterScene(TutorialScene3);
+    }
+    if (object == TS3leftButton) {
+        enterScene(TutorialScene2);
+    }
+    if (object == TS3rightButton) {
+        enterScene(TutorialScene4);
+    }
+    if (object == TS4leftButton) {
+        enterScene(TutorialScene3);
+    }
+    if (object == closeButton1) { // 튜토리얼을 다 읽고 닫기 버튼을 누르면
+        enterScene(StartScene); // 시작 scene으로 이동
+    }
+    if (object == closeButton2) { // 튜토리얼을 다 읽고 닫기 버튼을 누르면
+        enterScene(StartScene); // 시작 scene으로 이동
+    }
+    if (object == closeButton3) { // 튜토리얼을 다 읽고 닫기 버튼을 누르면
+        enterScene(StartScene); // 시작 scene으로 이동
+    }
+    if (object == closeButton4) { // 튜토리얼을 다 읽고 닫기 버튼을 누르면
         enterScene(StartScene); // 시작 scene으로 이동
     }
     if (object == completeButton) { // 구매를 마친 후 완료 버튼을 누르면
@@ -810,19 +838,41 @@ int main()
 
     //scene 생성
     StartScene = createScene("StartScene", "Images/scene/StartScene.png");
-    TutorialScene = createScene("TutorialScene", "Images/scene/TutorialScene.png");
+    TutorialScene1 = createScene("TutorialScene3", "Images/scene/RecipeBurgerScene.png");
+    TutorialScene2 = createScene("TutorialScene4", "Images/scene/RecipeSideDrinkScene.png");
+    TutorialScene3 = createScene("TutorialScene1", "Images/scene/TutorialMarketScene.png");
+    TutorialScene4 = createScene("TutorialScene2", "Images/scene/TutorialBurgerScene.png");
     MarketScene = createScene("MarketScene", "Images/scene/MarketScene.png");
     BurgerScene = createScene("BurgerScene", "Images/scene/BurgerScene.png");
     EndScene = createScene("EndScene", "Images/scene/EndScene.png");
 
     //object 생성
-    tutorialButton = createObject("tutorialButton", "Images/button/tutorialButton.png", StartScene, 150, 0);
     startButton = createObject("startButton", "Images/button/startButton.png", StartScene, 850, 0);
-    closeButton = createObject("closeButton", "Images/button/closeButton.png", TutorialScene, 1000, 450);
+    tutorialButton = createObject("tutorialButton", "Images/button/tutorialButton.png", StartScene, 150, 0);
+    TS1rightButton = createObject("TS1rightButton", "Images/button/rightButton.png", TutorialScene1, 1200, 0);
+    scaleObject(TS1rightButton, 0.3f);
+    TS2leftButton = createObject("TS2leftButton", "Images/button/leftButton.png", TutorialScene2, 0, 0);
+    scaleObject(TS2leftButton, 0.3f);
+    TS2rightButton = createObject("TS2rightButton", "Images/button/rightButton.png", TutorialScene2, 1200, 0);
+    scaleObject(TS2rightButton, 0.3f);
+    TS3leftButton = createObject("TS3leftButton", "Images/button/leftButton.png", TutorialScene3, 0, 0);
+    scaleObject(TS3leftButton, 0.3f);
+    TS3rightButton = createObject("TS3rightButton", "Images/button/rightButton.png", TutorialScene3, 1200, 0);
+    scaleObject(TS3rightButton, 0.3f);
+    TS4leftButton = createObject("TS4leftButton", "Images/button/leftButton.png", TutorialScene4, 0, 0);
+    scaleObject(TS4leftButton, 0.3f);
+    closeButton1 = createObject("close1Button", "Images/button/closeButton.png", TutorialScene1, 1200, 640);
+    scaleObject(closeButton1, 0.3f);
+    closeButton2 = createObject("close2Button", "Images/button/closeButton.png", TutorialScene2, 1200, 640);
+    scaleObject(closeButton2, 0.3f);
+    closeButton3 = createObject("close3Button", "Images/button/closeButton.png", TutorialScene3, 1200, 640);
+    scaleObject(closeButton3, 0.3f);
+    closeButton4 = createObject("close4Button", "Images/button/closeButton.png", TutorialScene4, 1200, 640);
+    scaleObject(closeButton4, 0.3f);
     completeButton = createObject("completeButton", "Images/button/completeButton.png", MarketScene, 900, -80);
     checkButton = createObject("checkButton", "Images/button/checkButton.png", BurgerScene, 1100, 300);
     scaleObject(checkButton, 0.45f);
-    endButton = createObject("endButton", "Images/button/endButton.png", EndScene, 500, 50);
+    endButton = createObject("endButton", "Images/button/endButton.png", EndScene, 0, 0);
 
     successObj = createObject("successObj", "Images/result/success.png", BurgerScene, 1080, 280);
     failObj = createObject("failObj", "Images/result/fail.png", BurgerScene, 1080, 280);
