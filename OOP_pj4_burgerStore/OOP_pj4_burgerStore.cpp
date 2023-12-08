@@ -6,16 +6,17 @@
 #include <time.h>
 #include <map>
 #include <algorithm>
-#include<iostream>
+#include <iostream>
 using namespace std;
 
 // 전역 변수
 int day = 0; // 몇 번째 날인지
 int customer_order = 1; // 몇 번째 손님인지
 
-SceneID StartScene, TutorialScene, MarketScene, BurgerScene, EndScene;
+SceneID StartScene, TutorialScene1, TutorialScene2, TutorialScene3, TutorialScene4, MarketScene, BurgerScene, EndScene;
 ObjectID tutorialButton, startButton; // StartScene
-ObjectID closeButton; // TutorialScene
+ObjectID closeButton1, closeButton2, closeButton3, closeButton4; // TutorialScene
+ObjectID TS1rightButton, TS2leftButton, TS2rightButton, TS3leftButton, TS3rightButton, TS4leftButton; // TutorialScene
 ObjectID completeButton; // MarketScene
 ObjectID checkButton; // BurgerScene
 ObjectID endButton; // EndScene
@@ -85,16 +86,17 @@ public:
         }
     }
     ObjectID obj;
-    bool checkIngredient(vector<Ingredient> choosenIngredients);
+    bool checkIngredient(vector<Ingredient> chosenIngredients);
     int getPrice() { return price; }
     string getName() { return name; }
+    int getIngredientCnt() { return ingredients.size(); }
 };
 
-bool Menu::checkIngredient(vector<Ingredient> choosenIngredients) {
+bool Menu::checkIngredient(vector<Ingredient> chosenIngredients) {
     int checkIng = 0;
     for (int i = 0; i < ingredients.size(); i++) {  //내거에서 있는지 비교 -> 있으면 바로 break -> 고른 수량상관없이 확인가능 -> 개수이용
-        for (int j = 0; j < choosenIngredients.size(); j++) {
-            if (ingredients[i].getName() == choosenIngredients[j].getName()) {  //내거랑 고른거랑 같은게 존재한다면
+        for (int j = 0; j < chosenIngredients.size(); j++) {
+            if (ingredients[i].getName() == chosenIngredients[j].getName()) {  //내거랑 고른거랑 같은게 존재한다면
                 checkIng++;
                 break;
             }
@@ -127,7 +129,6 @@ public:
     Drink(string _name, int _price, vector<Ingredient> _ingredients) :Menu(_name, _price, _ingredients) {/*생성자*/ };
 };
 
-
 class Customer {
 private:
     Burger myBurger;
@@ -141,7 +142,11 @@ public:
     //user가 선택한 재료가 레시피에 맞는지 확인
     bool allCheckIngredient(vector<Ingredient> chosenIngredient) {
         if (myBurger.checkIngredient(chosenIngredient) && mySide.checkIngredient(chosenIngredient) && myDrink.checkIngredient(chosenIngredient)) {
-            return true;
+            int totalCnt = myBurger.getIngredientCnt() + mySide.getIngredientCnt() + myDrink.getIngredientCnt();
+            if (totalCnt == chosenIngredient.size()) {
+                return true;
+            }
+
         }
         else
             return false;
@@ -329,36 +334,26 @@ public:
 };
 User user;
 
-
-class Market {
-public:
-    Market() {
-    }
-
-    bool chooseIngredients(ObjectID object) {
-        for (int i = 0; i < 13; i++) {
-            if (object == ingredient[i].obj_marketIngredient) { // market scene에서 구매할 물품을 선택했을 떄
-                if (user.getMoney() >= ingredient[i].getPrice()) { // 유저가 해당 ingredient를 살 돈이 충분한 경우
-                    user.useMoney(ingredient[i].getPrice());
-                    user.updateIngredients(ingredient[i]);
-                    return true;
-                }
-                else { // 유저가 해당 ingredient를 살 돈이 충분하지 않은 경우 살 수 없음
-                    return false;
-                }
-            }
-        }
-    }
-};
-
-
 // 이부분 전역변수 
-Customer customer[4]; // 5일마다 각 4명, 날 바뀔 때마다 초기화해서 재사용
-Market market;
+Customer customer[4]; //5일마다 각 4명, 날 바뀔 때마다 초기화해서 재사용
 vector<ObjectID> moneyNum;
 vector<Ingredient> chosenIngredient; //선택한 재료들의 이름을 넣는 벡터
 int ingredientNum[3]; //선택한 ingredient의 개수
 
+bool marketChooseIngredients(ObjectID object) {
+    for (int i = 0; i < 13; i++) {
+        if (object == ingredient[i].obj_marketIngredient) { // market scene에서 구매할 물품을 선택했을 떄
+            if (user.getMoney() >= ingredient[i].getPrice()) { // 유저가 해당 ingredient를 살 돈이 충분한 경우
+                user.useMoney(ingredient[i].getPrice());
+                user.updateIngredients(ingredient[i]);
+                return true;
+            }
+            else { // 유저가 해당 ingredient를 살 돈이 충분하지 않은 경우 살 수 없음
+                return false;
+            }
+        }
+    }
+}
 
 void showMoney(int myMoney, SceneID sceneName) {
     string money = to_string(myMoney); //int형의 myMoney를 string형으로 변환
@@ -372,47 +367,38 @@ void showMoney(int myMoney, SceneID sceneName) {
             switch (money[i]) {
             case '0':
                 moneyNum[i] = createObject("0", "Images/money/0.png", sceneName, 270 - 30 * (i - 1), 30);
-                scaleObject(moneyNum[i], 0.05f);
                 break;
             case '1':
                 moneyNum[i] = createObject("1", "Images/money/1.png", sceneName, 270 - 30 * (i - 1), 30);
-                scaleObject(moneyNum[i], 0.05f);
                 break;
             case '2':
                 moneyNum[i] = createObject("2", "Images/money/2.png", sceneName, 270 - 30 * (i - 1), 30);
-                scaleObject(moneyNum[i], 0.05f);
                 break;
             case '3':
                 moneyNum[i] = createObject("3", "Images/money/3.png", sceneName, 270 - 30 * (i - 1), 30);
-                scaleObject(moneyNum[i], 0.05f);
                 break;
             case '4':
                 moneyNum[i] = createObject("4", "Images/money/4.png", sceneName, 270 - 30 * (i - 1), 30);
-                scaleObject(moneyNum[i], 0.05f);
                 break;
             case '5':
                 moneyNum[i] = createObject("5", "Images/money/5.png", sceneName, 270 - 30 * (i - 1), 30);
-                scaleObject(moneyNum[i], 0.05f);
                 break;
             case '6':
                 moneyNum[i] = createObject("6", "Images/money/6.png", sceneName, 270 - 30 * (i - 1), 30);
-                scaleObject(moneyNum[i], 0.05f);
                 break;
             case '7':
                 moneyNum[i] = createObject("7", "Images/money/7.png", sceneName, 270 - 30 * (i - 1), 30);
-                scaleObject(moneyNum[i], 0.05f);
                 break;
             case '8':
                 moneyNum[i] = createObject("8", "Images/money/8.png", sceneName, 270 - 30 * (i - 1), 30);
-                scaleObject(moneyNum[i], 0.05f);
                 break;
             case '9':
                 moneyNum[i] = createObject("9", "Images/money/9.png", sceneName, 270 - 30 * (i - 1), 30);
-                scaleObject(moneyNum[i], 0.05f);
                 break;
             default:
                 break;
             }
+            scaleObject(moneyNum[i], 0.05f);
         }
     }
     //EndScene에서 최종 돈 띄우기
@@ -421,47 +407,38 @@ void showMoney(int myMoney, SceneID sceneName) {
             switch (money[i]) {
             case '0':
                 moneyNum[i] = createObject("0", "Images/money/0.png", sceneName, 695 - 55 * (i - 1), 378);
-                scaleObject(moneyNum[i], 0.08f);
                 break;
             case '1':
                 moneyNum[i] = createObject("1", "Images/money/1.png", sceneName, 695 - 55 * (i - 1), 378);
-                scaleObject(moneyNum[i], 0.08f);
                 break;
             case '2':
                 moneyNum[i] = createObject("2", "Images/money/2.png", sceneName, 695 - 55 * (i - 1), 378);
-                scaleObject(moneyNum[i], 0.08f);
                 break;
             case '3':
                 moneyNum[i] = createObject("3", "Images/money/3.png", sceneName, 695 - 55 * (i - 1), 378);
-                scaleObject(moneyNum[i], 0.08f);
                 break;
             case '4':
                 moneyNum[i] = createObject("4", "Images/money/4.png", sceneName, 695 - 55 * (i - 1), 378);
-                scaleObject(moneyNum[i], 0.08f);
                 break;
             case '5':
                 moneyNum[i] = createObject("5", "Images/money/5.png", sceneName, 695 - 55 * (i - 1), 378);
-                scaleObject(moneyNum[i], 0.08f);
                 break;
             case '6':
                 moneyNum[i] = createObject("6", "Images/money/6.png", sceneName, 695 - 55 * (i - 1), 378);
-                scaleObject(moneyNum[i], 0.08f);
                 break;
             case '7':
                 moneyNum[i] = createObject("7", "Images/money/7.png", sceneName, 695 - 55 * (i - 1), 378);
-                scaleObject(moneyNum[i], 0.08f);
                 break;
             case '8':
                 moneyNum[i] = createObject("8", "Images/money/8.png", sceneName, 695 - 55 * (i - 1), 378);
-                scaleObject(moneyNum[i], 0.08f);
                 break;
             case '9':
                 moneyNum[i] = createObject("9", "Images/money/9.png", sceneName, 695 - 55 * (i - 1), 378);
-                scaleObject(moneyNum[i], 0.08f);
                 break;
             default:
                 break;
             }
+            scaleObject(moneyNum[i], 0.08f);
         }
     }
 }
@@ -476,11 +453,11 @@ void showDay(int day, SceneID sceneName) {
 
 //마우스 이벤트
 void mouseCallback(ObjectID object, int x, int y, MouseAction action) {
-    scaleObject(successObj, 0.10f); hideObject(successObj);
-    scaleObject(failObj, 0.10f);    hideObject(failObj);
+    scaleObject(successObj, 0.60f); hideObject(successObj);
+    scaleObject(failObj, 0.60f);    hideObject(failObj);
 
     if (object == tutorialButton) { // 튜토리얼 버튼을 누르면
-        enterScene(TutorialScene); // 튜토리얼 scene으로 이동
+        enterScene(TutorialScene1); // 튜토리얼 scene으로 이동
     }
     if (object == startButton) { // 시작 버튼을 누르면
         enterScene(MarketScene); // 구매 scene으로 이동
@@ -488,13 +465,40 @@ void mouseCallback(ObjectID object, int x, int y, MouseAction action) {
         showDay(day, MarketScene);
         setStock(MarketScene);
     }
-    if (object == closeButton) { // 튜토리얼을 다 읽고 닫기 버튼을 누르면
+    if (object == TS1rightButton) {
+        enterScene(TutorialScene2);
+    }
+    if (object == TS2leftButton) {
+        enterScene(TutorialScene1);
+    }
+    if (object == TS2rightButton) {
+        enterScene(TutorialScene3);
+    }
+    if (object == TS3leftButton) {
+        enterScene(TutorialScene2);
+    }
+    if (object == TS3rightButton) {
+        enterScene(TutorialScene4);
+    }
+    if (object == TS4leftButton) {
+        enterScene(TutorialScene3);
+    }
+    if (object == closeButton1) { // 튜토리얼을 다 읽고 닫기 버튼을 누르면
+        enterScene(StartScene); // 시작 scene으로 이동
+    }
+    if (object == closeButton2) { // 튜토리얼을 다 읽고 닫기 버튼을 누르면
+        enterScene(StartScene); // 시작 scene으로 이동
+    }
+    if (object == closeButton3) { // 튜토리얼을 다 읽고 닫기 버튼을 누르면
+        enterScene(StartScene); // 시작 scene으로 이동
+    }
+    if (object == closeButton4) { // 튜토리얼을 다 읽고 닫기 버튼을 누르면
         enterScene(StartScene); // 시작 scene으로 이동
     }
     if (object == completeButton) { // 구매를 마친 후 완료 버튼을 누르면
         //new day        
         for (int i = 0; i < moneyNum.size(); i++)  hideObject(moneyNum[i]); //자본 업데이트
-
+        showObject(checkButton);
         customer[customer_order - 1].updateCustomer(); //랜덤으로 손님 메뉴 설정
         customer[customer_order - 1].showCustomer(); //손님, 메뉴 사진 띄우기
         scaleObject(customer[customer_order - 1].obj_Customer, 0.45f);
@@ -508,25 +512,26 @@ void mouseCallback(ObjectID object, int x, int y, MouseAction action) {
         setStock(BurgerScene);
     }
 
-    //성공 여부 띄우기
+    //성공실패 버튼 눌렀을 때
     if (object == successObj || object == failObj) {
         hideObject(object);
         if (object == successObj) {
             for (int i = 0; i < moneyNum.size(); i++)  hideObject(moneyNum[i]);
-            showMoney(user.getMoney(), BurgerScene);
+            showMoney(user.getMoney(), BurgerScene); showObject(checkButton);
         }
-
+        showObject(checkButton);
     }
     if (object == checkButton) { // 각 손님에게 메뉴를 제공하기 위해 체크 버튼을 누르면
         //제작 성공 -> success 띄우고 money update
         if (customer[customer_order - 1].allCheckIngredient(chosenIngredient)) {
             user.earnMoney(customer[customer_order - 1].getTotalPrice());
             showObject(successObj);
+            hideObject(checkButton);
         }
         else { //제작 실패 -> fail 띄움
             showObject(failObj);
+            hideObject(checkButton);
         }
-
         if (customer_order < 4) { //손님 수가 4명이 아니라면
             customer[customer_order - 1].hideCustomer(); //이전 손님, 메뉴 삭제
             customer_order += 1; //손님 수 증가
@@ -537,7 +542,6 @@ void mouseCallback(ObjectID object, int x, int y, MouseAction action) {
             customer[customer_order - 1].showCustomer(); //손님, 메뉴 사진 띄우기
             scaleObject(customer[customer_order - 1].obj_Customer, 0.45f);
         }
-
         else if (customer_order == 4) { // 마지막 손님이면
             customer[customer_order - 1].hideCustomer(); //이전 손님, 메뉴 삭제
             hideObject(dayObj);
@@ -551,6 +555,7 @@ void mouseCallback(ObjectID object, int x, int y, MouseAction action) {
 
                 showMoney(user.getMoney(), MarketScene);
                 showDay(day, MarketScene);
+                showObject(checkButton);
                 for (int i = 0; i < 13; i++) hideObject(user.obj_ingredientStock[i]);
                 setStock(MarketScene);
             }
@@ -571,7 +576,7 @@ void mouseCallback(ObjectID object, int x, int y, MouseAction action) {
     }
 
     //마켓의 ingredients를 클릭한 경우
-    if (market.chooseIngredients(object) == true) {
+    if (marketChooseIngredients(object) == true) {
         for (int i = 0; i < moneyNum.size(); i++) hideObject(moneyNum[i]);
         showMoney(user.getMoney(), MarketScene);
         for (int i = 0; i < 13; i++) hideObject(user.obj_ingredientStock[i]);
@@ -625,6 +630,7 @@ void clickBurgerIngredient(int i) {
         chosenIngredient.push_back(ingredient[i]);
         ingredientNum[0]++;
         showChosenIngredient(ingredient[i].getName(), i, ingredientNum[0]);
+
     }
 }
 
@@ -657,88 +663,52 @@ ObjectID createObject(const char* name, const char* image, SceneID scene, int x,
 void setMarketIngredients() {
     //가격띄우기
     ingredient[0].obj_marketIngredient = createObject("500", "Images/price/500.png", MarketScene, 550, 560);
-    scaleObject(ingredient[0].obj_marketIngredient, 0.15f);
     ingredient[1].obj_marketIngredient = createObject("1000", "Images/price/1000.png", MarketScene, 555, 425);
-    scaleObject(ingredient[1].obj_marketIngredient, 0.15f);
     ingredient[2].obj_marketIngredient = createObject("1000", "Images/price/1000.png", MarketScene, 555, 285);
-    scaleObject(ingredient[2].obj_marketIngredient, 0.15f);
     ingredient[3].obj_marketIngredient = createObject("2000", "Images/price/2000.png", MarketScene, 558, 145);
-    scaleObject(ingredient[3].obj_marketIngredient, 0.15f);
     ingredient[4].obj_marketIngredient = createObject("10000", "Images/price/10000.png", MarketScene, 570, 6);
-    scaleObject(ingredient[4].obj_marketIngredient, 0.15f);
     ingredient[5].obj_marketIngredient = createObject("500", "Images/price/500.png", MarketScene, 830, 560);
-    scaleObject(ingredient[5].obj_marketIngredient, 0.15f);
     ingredient[6].obj_marketIngredient = createObject("500", "Images/price/500.png", MarketScene, 830, 425);
-    scaleObject(ingredient[6].obj_marketIngredient, 0.15f);
     ingredient[7].obj_marketIngredient = createObject("500", "Images/price/500.png", MarketScene, 830, 285);
-    scaleObject(ingredient[7].obj_marketIngredient, 0.15f);
     ingredient[8].obj_marketIngredient = createObject("500", "Images/price/500.png", MarketScene, 830, 145);
-    scaleObject(ingredient[8].obj_marketIngredient, 0.15f);
     ingredient[9].obj_marketIngredient = createObject("500", "Images/price/500.png", MarketScene, 1110, 560);
-    scaleObject(ingredient[9].obj_marketIngredient, 0.15f);
     ingredient[10].obj_marketIngredient = createObject("500", "Images/price/500.png", MarketScene, 1110, 425);
-    scaleObject(ingredient[10].obj_marketIngredient, 0.15f);
     ingredient[11].obj_marketIngredient = createObject("1000", "Images/price/1000.png", MarketScene, 1115, 285);
-    scaleObject(ingredient[11].obj_marketIngredient, 0.15f);
     ingredient[12].obj_marketIngredient = createObject("1000", "Images/price/1000.png", MarketScene, 1118, 145);
-    scaleObject(ingredient[12].obj_marketIngredient, 0.15f);
+    for (int i = 0; i < 13; i++) scaleObject(ingredient[i].obj_marketIngredient, 0.15f);
 
     //재료 띄우기
     ingredient[0].obj_marketIngredient = createObject("bread", "Images/ingredient/bread.png", MarketScene, 440, 580);
-    scaleObject(ingredient[0].obj_marketIngredient, 0.28f);
     ingredient[1].obj_marketIngredient = createObject("bulgogiPatty", "Images/ingredient/bulgogiPatty.png", MarketScene, 440, 440);
-    scaleObject(ingredient[1].obj_marketIngredient, 0.28f);
     ingredient[2].obj_marketIngredient = createObject("chicken", "Images/ingredient/chicken.png", MarketScene, 435, 295);
-    scaleObject(ingredient[2].obj_marketIngredient, 0.28f);
     ingredient[3].obj_marketIngredient = createObject("crabMeat", "Images/ingredient/crabMeat.png", MarketScene, 440, 165);
-    scaleObject(ingredient[3].obj_marketIngredient, 0.28f);
     ingredient[4].obj_marketIngredient = createObject("cow", "Images/ingredient/cow.png", MarketScene, 440, 20);
-    scaleObject(ingredient[4].obj_marketIngredient, 0.28f);
     ingredient[5].obj_marketIngredient = createObject("tomato", "Images/ingredient/tomato.png", MarketScene, 720, 573);
-    scaleObject(ingredient[5].obj_marketIngredient, 0.28f);
     ingredient[6].obj_marketIngredient = createObject("cabbage", "Images/ingredient/cabbage.png", MarketScene, 720, 440);
-    scaleObject(ingredient[6].obj_marketIngredient, 0.28f);
     ingredient[7].obj_marketIngredient = createObject("slicedCheese", "Images/ingredient/slicedCheese.png", MarketScene, 720, 295);
-    scaleObject(ingredient[7].obj_marketIngredient, 0.28f);
     ingredient[8].obj_marketIngredient = createObject("potato", "Images/ingredient/potato.png", MarketScene, 720, 165);
-    scaleObject(ingredient[8].obj_marketIngredient, 0.28f);
     ingredient[9].obj_marketIngredient = createObject("oil", "Images/ingredient/oil.png", MarketScene, 1000, 580);
-    scaleObject(ingredient[9].obj_marketIngredient, 0.28f);
     ingredient[10].obj_marketIngredient = createObject("stringCheese", "Images/ingredient/stringCheese.png", MarketScene, 1000, 440);
-    scaleObject(ingredient[10].obj_marketIngredient, 0.28f);
     ingredient[11].obj_marketIngredient = createObject("coke", "Images/ingredient/coke.png", MarketScene, 1000, 295);
-    scaleObject(ingredient[11].obj_marketIngredient, 0.28f);
     ingredient[12].obj_marketIngredient = createObject("soda", "Images/ingredient/soda.png", MarketScene, 1000, 165);
-    scaleObject(ingredient[12].obj_marketIngredient, 0.28f);
+    for (int i = 0; i < 13; i++)scaleObject(ingredient[i].obj_marketIngredient, 0.28f);
 }
 
 void setUserIngredientsAt(SceneID scene) {
     ingredient[0].obj_userIngredient = createObject("bread", "Images/ingredient/bread.png", scene, 40, 530);
-    scaleObject(ingredient[0].obj_userIngredient, 0.18f);
     ingredient[1].obj_userIngredient = createObject("bulgogiPatty", "Images/ingredient/bulgogiPatty.png", scene, 40, 440);
-    scaleObject(ingredient[1].obj_userIngredient, 0.18f);
     ingredient[2].obj_userIngredient = createObject("chicken", "Images/ingredient/chicken.png", scene, 40, 345);
-    scaleObject(ingredient[2].obj_userIngredient, 0.18f);
     ingredient[3].obj_userIngredient = createObject("crabMeat", "Images/ingredient/crabMeat.png", scene, 40, 275);
-    scaleObject(ingredient[3].obj_userIngredient, 0.18f);
     ingredient[4].obj_userIngredient = createObject("cow", "Images/ingredient/cow.png", scene, 40, 195);
-    scaleObject(ingredient[4].obj_userIngredient, 0.18f);
     ingredient[5].obj_userIngredient = createObject("tomato", "Images/ingredient/tomato.png", scene, 40, 105);
-    scaleObject(ingredient[5].obj_userIngredient, 0.18f);
     ingredient[6].obj_userIngredient = createObject("cabbage", "Images/ingredient/cabbage.png", scene, 210, 530);
-    scaleObject(ingredient[6].obj_userIngredient, 0.18f);
     ingredient[7].obj_userIngredient = createObject("slicedCheese", "Images/ingredient/slicedCheese.png", scene, 215, 440);
-    scaleObject(ingredient[7].obj_userIngredient, 0.18f);
     ingredient[8].obj_userIngredient = createObject("potato", "Images/ingredient/potato.png", scene, 220, 345);
-    scaleObject(ingredient[8].obj_userIngredient, 0.18f);
     ingredient[9].obj_userIngredient = createObject("oil", "Images/ingredient/oil.png", scene, 210, 275);
-    scaleObject(ingredient[9].obj_userIngredient, 0.18f);
     ingredient[10].obj_userIngredient = createObject("stringCheese", "Images/ingredient/stringCheese.png", scene, 210, 195);
-    scaleObject(ingredient[10].obj_userIngredient, 0.18f);
     ingredient[11].obj_userIngredient = createObject("coke", "Images/ingredient/coke.png", scene, 175, 110);
-    scaleObject(ingredient[11].obj_userIngredient, 0.18f);
     ingredient[12].obj_userIngredient = createObject("soda", "Images/ingredient/soda.png", scene, 270, 110);
-    scaleObject(ingredient[12].obj_userIngredient, 0.18f);
+    for (int i = 0; i < 13; i++) scaleObject(ingredient[i].obj_userIngredient, 0.18f);
 }
 
 //사이드바에 stock 띄우기
@@ -751,49 +721,39 @@ void setStock(SceneID scene) {
         switch (user.getIngredientAmount(ingredient[i])) {
         case 0:
             user.obj_ingredientStock[i] = createObject("stock", "Images/stock/0.png", scene, pos[i][0], pos[i][1]);
-            scaleObject(user.obj_ingredientStock[i], 0.05f);
             break;
         case 1:
             user.obj_ingredientStock[i] = createObject("stock", "Images/stock/1.png", scene, pos[i][0], pos[i][1]);
-            scaleObject(user.obj_ingredientStock[i], 0.05f);
             break;
         case 2:
             user.obj_ingredientStock[i] = createObject("stock", "Images/stock/2.png", scene, pos[i][0], pos[i][1]);
-            scaleObject(user.obj_ingredientStock[i], 0.05f);
             break;
         case 3:
             user.obj_ingredientStock[i] = createObject("stock", "Images/stock/3.png", scene, pos[i][0], pos[i][1]);
-            scaleObject(user.obj_ingredientStock[i], 0.05f);
             break;
         case 4:
             user.obj_ingredientStock[i] = createObject("stock", "Images/stock/4.png", scene, pos[i][0], pos[i][1]);
-            scaleObject(user.obj_ingredientStock[i], 0.05f);
             break;
         case 5:
             user.obj_ingredientStock[i] = createObject("stock", "Images/stock/5.png", scene, pos[i][0], pos[i][1]);
-            scaleObject(user.obj_ingredientStock[i], 0.05f);
             break;
         case 6:
             user.obj_ingredientStock[i] = createObject("stock", "Images/stock/6.png", scene, pos[i][0], pos[i][1]);
-            scaleObject(user.obj_ingredientStock[i], 0.05f);
             break;
         case 7:
             user.obj_ingredientStock[i] = createObject("stock", "Images/stock/7.png", scene, pos[i][0], pos[i][1]);
-            scaleObject(user.obj_ingredientStock[i], 0.05f);
             break;
         case 8:
             user.obj_ingredientStock[i] = createObject("stock", "Images/stock/8.png", scene, pos[i][0], pos[i][1]);
-            scaleObject(user.obj_ingredientStock[i], 0.05f);
             break;
         case 9:
             user.obj_ingredientStock[i] = createObject("stock", "Images/stock/9.png", scene, pos[i][0], pos[i][1]);
-            scaleObject(user.obj_ingredientStock[i], 0.05f);
             break;
         default:
             user.obj_ingredientStock[i] = createObject("stock", "Images/stock/many.png", scene, pos[i][0], pos[i][1]);
-            scaleObject(user.obj_ingredientStock[i], 0.05f);
             break;
         }
+        scaleObject(user.obj_ingredientStock[i], 0.05f);
     }
 }
 
@@ -878,22 +838,44 @@ int main()
 
     //scene 생성
     StartScene = createScene("StartScene", "Images/scene/StartScene.png");
-    TutorialScene = createScene("TutorialScene", "Images/scene/TutorialScene.png");
+    TutorialScene1 = createScene("TutorialScene3", "Images/scene/RecipeBurgerScene.png");
+    TutorialScene2 = createScene("TutorialScene4", "Images/scene/RecipeSideDrinkScene.png");
+    TutorialScene3 = createScene("TutorialScene1", "Images/scene/TutorialMarketScene.png");
+    TutorialScene4 = createScene("TutorialScene2", "Images/scene/TutorialBurgerScene.png");
     MarketScene = createScene("MarketScene", "Images/scene/MarketScene.png");
     BurgerScene = createScene("BurgerScene", "Images/scene/BurgerScene.png");
     EndScene = createScene("EndScene", "Images/scene/EndScene.png");
 
     //object 생성
-    tutorialButton = createObject("tutorialButton", "Images/button/tutorialButton.png", StartScene, 150, 0);
     startButton = createObject("startButton", "Images/button/startButton.png", StartScene, 850, 0);
-    closeButton = createObject("closeButton", "Images/button/closeButton.png", TutorialScene, 1000, 450);
+    tutorialButton = createObject("tutorialButton", "Images/button/tutorialButton.png", StartScene, 150, 0);
+    TS1rightButton = createObject("TS1rightButton", "Images/button/rightButton.png", TutorialScene1, 1200, 0);
+    scaleObject(TS1rightButton, 0.3f);
+    TS2leftButton = createObject("TS2leftButton", "Images/button/leftButton.png", TutorialScene2, 0, 0);
+    scaleObject(TS2leftButton, 0.3f);
+    TS2rightButton = createObject("TS2rightButton", "Images/button/rightButton.png", TutorialScene2, 1200, 0);
+    scaleObject(TS2rightButton, 0.3f);
+    TS3leftButton = createObject("TS3leftButton", "Images/button/leftButton.png", TutorialScene3, 0, 0);
+    scaleObject(TS3leftButton, 0.3f);
+    TS3rightButton = createObject("TS3rightButton", "Images/button/rightButton.png", TutorialScene3, 1200, 0);
+    scaleObject(TS3rightButton, 0.3f);
+    TS4leftButton = createObject("TS4leftButton", "Images/button/leftButton.png", TutorialScene4, 0, 0);
+    scaleObject(TS4leftButton, 0.3f);
+    closeButton1 = createObject("close1Button", "Images/button/closeButton.png", TutorialScene1, 1200, 640);
+    scaleObject(closeButton1, 0.3f);
+    closeButton2 = createObject("close2Button", "Images/button/closeButton.png", TutorialScene2, 1200, 640);
+    scaleObject(closeButton2, 0.3f);
+    closeButton3 = createObject("close3Button", "Images/button/closeButton.png", TutorialScene3, 1200, 640);
+    scaleObject(closeButton3, 0.3f);
+    closeButton4 = createObject("close4Button", "Images/button/closeButton.png", TutorialScene4, 1200, 640);
+    scaleObject(closeButton4, 0.3f);
     completeButton = createObject("completeButton", "Images/button/completeButton.png", MarketScene, 900, -80);
     checkButton = createObject("checkButton", "Images/button/checkButton.png", BurgerScene, 1100, 300);
-    scaleObject(checkButton, 0.5f);
+    scaleObject(checkButton, 0.45f);
     endButton = createObject("endButton", "Images/button/endButton.png", EndScene, 0, 0);
 
-    successObj = createObject("successObj", "Images/result/success.png", BurgerScene, 1100, 550);
-    failObj = createObject("failObj", "Images/result/fail.png", BurgerScene, 1100, 550);
+    successObj = createObject("successObj", "Images/result/success.png", BurgerScene, 1080, 280);
+    failObj = createObject("failObj", "Images/result/fail.png", BurgerScene, 1080, 280);
 
     setIngredients();
     setMarketIngredients();
